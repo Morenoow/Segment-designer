@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>News AI Campaign Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #f2f7ff 0, #e5f1ff 40%, #f8fafc 100%);
+    }
+    .bg-lines {
+      background-image:
+        repeating-linear-gradient(
+          -70deg,
+          rgba(148, 163, 184, 0.16),
+          rgba(148, 163, 184, 0.16) 1px,
+          transparent 1px,
+          transparent 22px
+        );
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center px-4 py-8 text-slate-900">
+  <div class="relative w-full max-w-6xl mx-auto overflow-hidden rounded-3xl bg-white/80 shadow-xl border border-slate-100">
+    <div class="absolute inset-0 bg-lines opacity-40 pointer-events-none"></div>
+
+    <div class="relative px-6 sm:px-10 py-8 sm:py-10 space-y-8">
+      <!-- Header -->
+      <header class="space-y-3 text-center">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight">
+          Build your News Campaign with <span class="font-bold">Ad Fontes</span>.
+          <span class="font-medium">Powered by</span>
+          <span class="bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 bg-clip-text text-transparent font-extrabold">
+            News&nbsp;AI
+          </span>
+        </h1>
+        <p class="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
+          Walk through three simple steps: upload your inclusion list, set News&nbsp;AI thresholds, and send us the details to activate private Deal IDs.
+        </p>
+      </header>
+
+      <!-- Timeline -->
+      <nav class="flex items-center justify-between gap-3 text-xs sm:text-sm font-medium">
+        <div class="flex-1 flex items-center gap-3">
+          <button data-step-nav="1" class="step-nav flex items-center gap-2">
+            <span class="step-nav-circle flex h-7 w-7 items-center justify-center rounded-full border bg-white text-slate-700 text-xs font-semibold">
+              1
+            </span>
+            <span class="hidden sm:inline">Upload Inclusion List</span>
+          </button>
+          <div class="flex-1 h-[2px] bg-slate-200 rounded-full"></div>
+        </div>
+        <div class="flex-1 flex items-center gap-3">
+          <button data-step-nav="2" class="step-nav flex items-center gap-2 justify-center">
+            <span class="step-nav-circle flex h-7 w-7 items-center justify-center rounded-full border bg-white text-slate-700 text-xs font-semibold">
+              2
+            </span>
+            <span class="hidden sm:inline">Set News&nbsp;AI Thresholds</span>
+          </button>
+          <div class="flex-1 h-[2px] bg-slate-200 rounded-full"></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button data-step-nav="3" class="step-nav flex items-center gap-2 justify-end">
+            <span class="step-nav-circle flex h-7 w-7 items-center justify-center rounded-full border bg-white text-slate-700 text-xs font-semibold">
+              3
+            </span>
+            <span class="hidden sm:inline">Activate</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- STEP 1 -->
+      <section id="step-1" class="step-section space-y-6">
+        <div>
+          <h2 class="text-lg sm:text-xl font-semibold mb-1">Step 1: Upload your Inclusion List</h2>
+          <p class="text-sm sm:text-[0.95rem] text-slate-600 max-w-2xl">
+            Start from your existing news site list. We’ll keep supported domains in your inclusion list and suggest high-quality additions from our library of 4,000+ news domains.
+          </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+          <!-- Left: upload & recommended -->
+          <div class="w-full lg:w-1/2 space-y-4">
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-slate-800">Upload your inclusion list</label>
+              <div class="flex flex-wrap items-center gap-3">
+                <input id="fileInput" type="file" accept=".txt,.csv" class="text-xs sm:text-sm" />
+                <button
+                  type="button"
+                  id="loadSampleButton"
+                  class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                >
+                  Load sample list
+                </button>
+              </div>
+              <p class="text-[0.75rem] text-slate-500">
+                Upload a plain text or CSV file with one domain per line.
+              </p>
+            </div>
+
+            <div class="space-y-2">
+              <h3 class="text-sm font-semibold text-slate-800">Recommended domains to add</h3>
+              <p class="text-[0.75rem] text-slate-500">
+                Start from quality-based bundles or add domains by topic, then fine-tune with search.
+              </p>
+
+              <!-- Pre-curated bundles: quality-based -->
+              <div class="space-y-1.5 text-xs">
+                <div class="text-[0.7rem] font-semibold uppercase tracking-wide text-slate-500">
+                  Add by overall quality
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <button id="addTop50" type="button"
+                    class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition">
+                    Add top 50
+                  </button>
+                  <button id="addTop100" type="button"
+                    class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition">
+                    Add top 100
+                  </button>
+                  <button id="addTop200" type="button"
+                    class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition">
+                    Add top 200
+                  </button>
+                  <button id="addAllRecommended" type="button"
+                    class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition">
+                    Add all 4,000
+                  </button>
+                </div>
+              </div>
+
+              <!-- Category bundles -->
+              <div class="space-y-1.5 text-xs mt-2">
+                <div class="text-[0.7rem] font-semibold uppercase tracking-wide text-slate-500">
+                  Add by topic
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" class="category-button inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition" data-category="sports">
+                    All sports news
+                  </button>
+                  <button type="button" class="category-button inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition" data-category="finance">
+                    All finance news
+                  </button>
+                  <button type="button" class="category-button inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition" data-category="weather">
+                    All weather news
+                  </button>
+                  <button type="button" class="category-button inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition" data-category="entertainment">
+                    All entertainment news
+                  </button>
+                  <button type="button" class="category-button inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 font-semibold hover:bg-slate-50 active:scale-95 transition" data-category="local">
+                    All local news
+                  </button>
+                </div>
+              </div>
+
+              <!-- Search -->
+              <div class="mt-2">
+                <input id="domainSearch" type="text" placeholder="Search recommended domains"
+                  class="w-full rounded-full border border-slate-200 px-3 py-1.5 text-xs bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent" />
+              </div>
+
+              <div class="border border-slate-200 rounded-xl bg-white/70 max-h-64 overflow-y-auto text-sm mt-2">
+                <ul id="recommendedList" class="divide-y divide-slate-100">
+                  <!-- Filled by JS -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle arrows -->
+          <div class="flex flex-row lg:flex-col items-center justify-center gap-3">
+            <button
+              type="button"
+              id="addToInclusion"
+              class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold hover:bg-slate-50 active:scale-95 transition"
+            >
+              ➜
+            </button>
+            <button
+              type="button"
+              id="removeFromInclusion"
+              class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold hover:bg-slate-50 active:scale-95 transition"
+            >
+              ⬅
+            </button>
+          </div>
+
+          <!-- Right: inclusion list -->
+          <div class="w-full lg:w-1/2 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="text-sm font-semibold text-slate-800">News Inclusion List</h3>
+              <span id="inclusionCount" class="text-[0.75rem] text-slate-500"></span>
+            </div>
+            <div class="border border-slate-200 rounded-xl bg-white/70 max-h-72 overflow-y-auto text-sm">
+              <ul id="inclusionList" class="divide-y divide-slate-100">
+                <!-- Filled by JS -->
+              </ul>
+            </div>
+            <p class="text-[0.75rem] text-slate-500">
+              Tip: Click a domain to move it between lists, or use the arrows for multi-select.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button
+            type="button"
+            data-next-step="2"
+            class="next-button inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 text-white shadow-md hover:shadow-lg hover:brightness-110 active:scale-95 transition"
+          >
+            Next: Set thresholds
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section id="step-2" class="step-section space-y-6 hidden">
+        <div>
+          <h2 class="text-lg sm:text-xl font-semibold mb-1">Step 2: Set your News&nbsp;AI Thresholds</h2>
+          <p class="text-sm sm:text-[0.95rem] text-slate-600 max-w-2xl">
+            Choose how strict you want to be. Set a reliability floor and bias range, and see how your choices change the share of inventory you’ll run on.
+          </p>
+        </div>
+
+        <!-- Controls -->
+        <div class="grid gap-6 lg:grid-cols-2">
+          <!-- Reliability floor -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-slate-800">1. Reliability floor</h3>
+            <p class="text-xs text-slate-500 max-w-md">
+              Higher floors focus on the most reliable news. Looser floors open up more volume while staying above your minimum standard.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button type="button" class="floor-option option-card flex-1 rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-floor="tight">
+                <div class="font-semibold mb-1">Tight</div>
+                <div class="h-10 w-full rounded-md bg-gradient-to-t from-slate-100 via-slate-100 to-emerald-200 overflow-hidden relative">
+                  <div class="absolute inset-x-0 bottom-0 h-[35%] bg-red-200/60"></div>
+                  <div class="absolute inset-x-0 bottom-[35%] h-[15%] bg-rose-100/70"></div>
+                  <div class="absolute inset-x-[30%] w-[40%] top-0 bottom-[55%] border-2 border-emerald-500/80 bg-emerald-200/40"></div>
+                </div>
+              </button>
+              <button type="button" class="floor-option option-card flex-1 rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-floor="regular">
+                <div class="font-semibold mb-1">Regular</div>
+                <div class="h-10 w-full rounded-md bg-gradient-to-t from-slate-100 via-slate-100 to-emerald-200 overflow-hidden relative">
+                  <div class="absolute inset-x-0 bottom-0 h-[35%] bg-red-200/60"></div>
+                  <div class="absolute inset-x-0 bottom-[35%] h-[15%] bg-rose-100/70"></div>
+                  <div class="absolute inset-x-[25%] w-[50%] top-[15%] bottom-[50%] border-2 border-emerald-500/80 bg-emerald-200/40"></div>
+                </div>
+              </button>
+              <button type="button" class="floor-option option-card flex-1 rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-floor="looser">
+                <div class="font-semibold mb-1">Looser</div>
+                <div class="h-10 w-full rounded-md bg-gradient-to-t from-slate-100 via-slate-100 to-emerald-200 overflow-hidden relative">
+                  <div class="absolute inset-x-0 bottom-0 h-[35%] bg-red-200/60"></div>
+                  <div class="absolute inset-x-0 bottom-[35%] h-[15%] bg-rose-100/70"></div>
+                  <div class="absolute inset-x-[20%] w-[60%] top-[30%] bottom-[45%] border-emerald-500/80 bg-emerald-200/40"></div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bias range -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-slate-800">2. Bias range</h3>
+            <p class="text-xs text-slate-500 max-w-md">
+              Keep your activation centered, open it up across the spectrum, or lean more left or right while staying above your reliability floor.
+            </p>
+            <div class="grid grid-cols-2 gap-3">
+              <button type="button" class="bias-option option-card rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-bias="regular">
+                <div class="font-semibold mb-1">Regular</div>
+                <div class="h-10 w-full rounded-md bg-slate-50 overflow-hidden relative">
+                  <div class="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-100 to-slate-100"></div>
+                  <div class="absolute top-[25%] bottom-[25%] inset-x-[30%] border-2 border-emerald-500/80 bg-emerald-200/40"></div>
+                  <div class="absolute inset-y-[30%] left-[48%] w-[2px] bg-slate-300"></div>
+                </div>
+              </button>
+              <button type="button" class="bias-option option-card rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-bias="wide">
+                <div class="font-semibold mb-1">Wide</div>
+                <div class="h-10 w-full rounded-md bg-slate-50 overflow-hidden relative">
+                  <div class="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-100 to-slate-100"></div>
+                  <div class="absolute top-[25%] bottom-[25%] inset-x-[15%] border-2 border-emerald-500/80 bg-emerald-200/40"></div>
+                  <div class="absolute inset-y-[30%] left-[48%] w-[2px] bg-slate-300"></div>
+                </div>
+              </button>
+              <button type="button" class="bias-option option-card rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-bias="left">
+                <div class="font-semibold mb-1">Leans Left</div>
+                <div class="h-10 w-full rounded-md bg-slate-50 overflow-hidden relative">
+                  <div class="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-100 to-slate-100"></div>
+                  <div class="absolute top-[25%] bottom-[25%] left-[10%] right-[45%] border-2 border-emerald-500/80 bg-emerald-200/40"></div>
+                  <div class="absolute inset-y-[30%] left-[48%] w-[2px] bg-slate-300"></div>
+                </div>
+              </button>
+              <button type="button" class="bias-option option-card rounded-xl border px-3 py-2 text-left text-xs sm:text-sm"
+                      data-bias="right">
+                <div class="font-semibold mb-1">Leans Right</div>
+                <div class="h-10 w-full rounded-md bg-slate-50 overflow-hidden relative">
+                  <div class="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-100 to-slate-100"></div>
+                  <div class="absolute top-[25%] bottom-[25%] left-[45%] right-[10%] border-2 border-emerald-500/80 bg-emerald-200/40"></div>
+                  <div class="absolute inset-y-[30%] left-[48%] w-[2px] bg-slate-300"></div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main chart -->
+        <div class="mt-2 border border-slate-200 rounded-2xl bg-white/80 p-4 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-800">How your filters shape the inventory</h3>
+              <p class="text-xs text-slate-500 max-w-md">
+                The green box shows where News&nbsp;AI will actively buy. Dots inside the box are eligible impressions; dots outside are excluded.
+              </p>
+            </div>
+            <div class="text-xs text-slate-600">
+              <div><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1 align-middle"></span>Included: <span id="includedShare">0%</span></div>
+              <div><span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1 align-middle"></span>Excluded: <span id="excludedShare">0%</span></div>
+            </div>
+          </div>
+          <div class="relative w-full aspect-video">
+            <canvas id="thresholdChart" class="absolute inset-0 w-full h-full"></canvas>
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <button
+            type="button"
+            data-prev-step="1"
+            class="prev-button inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold bg-white border border-slate-200 text-slate-700 shadow-sm hover:bg-slate-50 active:scale-95 transition"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            data-next-step="3"
+            class="next-button inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 text-white shadow-md hover:shadow-lg hover:brightness-110 active:scale-95 transition"
+          >
+            Next: Activation details
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section id="step-3" class="step-section space-y-6 hidden">
+        <div>
+          <h2 class="text-lg sm:text-xl font-semibold mb-1">Step 3: Activation Details</h2>
+          <p class="text-sm sm:text-[0.95rem] text-slate-600 max-w-2xl">
+            Share the details we need to activate your private Deal IDs in your DSP and route spend into your News&nbsp;AI segment.
+          </p>
+        </div>
+
+        <form id="activationForm" class="grid gap-4 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Brand name</label>
+            <input type="text" name="brand" required
+                   class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">DSP</label>
+            <select name="dsp" required
+                    class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent">
+              <option value="">Select DSP</option>
+              <option value="The Trade Desk">The Trade Desk</option>
+              <option value="Yahoo DSP">Yahoo DSP</option>
+              <option value="Amazon DSP">Amazon DSP</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Deal ID (if known)</label>
+            <input type="text" name="dealId"
+                   class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Planned start date</label>
+            <input type="date" name="startDate"
+                   class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Estimated monthly news budget</label>
+            <input type="text" name="budget" placeholder="e.g. €250,000"
+                   class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Notes for the Ad Fontes team</label>
+            <textarea name="notes" rows="3"
+                      class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+                      placeholder="Target audiences, KPIs, brands to exclude, or anything else that will help us set this up correctly."></textarea>
+          </div>
+        </form>
+
+        <div class="flex justify-between">
+          <button
+            type="button"
+            data-prev-step="2"
+            class="prev-button inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold bg-white border border-slate-200 text-slate-700 shadow-sm hover:bg-slate-50 active:scale-95 transition"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            id="finishButton"
+            class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-emerald-500 via-sky-500 to-indigo-500 text-white shadow-md hover:shadow-lg hover:brightness-110 active:scale-95 transition"
+          >
+            Finish
+          </button>
+        </div>
+
+        <div id="finishMessage" class="hidden rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          Great — you’re ready to activate. Share this configuration with your Ad Fontes contact and we’ll generate the private Deal IDs in your DSP.
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // ---------- STEP / NAV LOGIC ----------
+    let currentStep = 1;
+
+    function updateStepDisplay() {
+      document.querySelectorAll('.step-section').forEach(sec => {
+        sec.classList.add('hidden');
+      });
+      const active = document.getElementById('step-' + currentStep);
+      if (active) active.classList.remove('hidden');
+
+      document.querySelectorAll('[data-step-nav]').forEach(btn => {
+        const step = parseInt(btn.dataset.stepNav, 10);
+        const circle = btn.querySelector('.step-nav-circle');
+        btn.classList.remove('text-sky-600', 'font-semibold');
+        circle.classList.remove('bg-sky-500', 'text-white', 'border-sky-500', 'shadow-md');
+        circle.classList.remove('bg-emerald-500');
+
+        if (step === currentStep) {
+          btn.classList.add('text-sky-600', 'font-semibold');
+          circle.classList.add('bg-sky-500', 'text-white', 'border-sky-500', 'shadow-md');
+        } else if (step < currentStep) {
+          circle.classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
+        }
+      });
+    }
+
+    document.querySelectorAll('.next-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = parseInt(btn.dataset.nextStep, 10);
+        if (!Number.isNaN(target)) {
+          currentStep = target;
+          updateStepDisplay();
+        }
+      });
+    });
+
+    document.querySelectorAll('.prev-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = parseInt(btn.dataset.prevStep, 10);
+        if (!Number.isNaN(target)) {
+          currentStep = target;
+          updateStepDisplay();
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-step-nav]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = parseInt(btn.dataset.stepNav, 10);
+        currentStep = step;
+        updateStepDisplay();
+      });
+    });
+
+    // ---------- STEP 1: LIST LOGIC ----------
+    const recommendedListEl = document.getElementById('recommendedList');
+    const inclusionListEl = document.getElementById('inclusionList');
+    const inclusionCountEl = document.getElementById('inclusionCount');
+    const domainSearchInput = document.getElementById('domainSearch');
+
+    const masterDomains = [
+      { domain: 'nytimes.com', category: 'general', rank: 1 },
+      { domain: 'washingtonpost.com', category: 'general', rank: 2 },
+      { domain: 'wsj.com', category: 'finance', rank: 3 },
+      { domain: 'ft.com', category: 'finance', rank: 4 },
+      { domain: 'bloomberg.com', category: 'finance', rank: 5 },
+      { domain: 'reuters.com', category: 'general', rank: 6 },
+      { domain: 'apnews.com', category: 'general', rank: 7 },
+      { domain: 'bbc.com', category: 'general', rank: 8 },
+      { domain: 'theguardian.com', category: 'general', rank: 9 },
+      { domain: 'economist.com', category: 'finance', rank: 10 },
+      { domain: 'npr.org', category: 'general', rank: 11 },
+      { domain: 'latimes.com', category: 'local', rank: 12 },
+      { domain: 'chicagotribune.com', category: 'local', rank: 13 },
+      { domain: 'espn.com', category: 'sports', rank: 14 },
+      { domain: 'foxsports.com', category: 'sports', rank: 15 },
+      { domain: 'cbssports.com', category: 'sports', rank: 16 },
+      { domain: 'skysports.com', category: 'sports', rank: 17 },
+      { domain: 'nbcsports.com', category: 'sports', rank: 18 },
+      { domain: 'marketwatch.com', category: 'finance', rank: 19 },
+      { domain: 'forbes.com', category: 'finance', rank: 20 },
+      { domain: 'cnbc.com', category: 'finance', rank: 21 },
+      { domain: 'investopedia.com', category: 'finance', rank: 22 },
+      { domain: 'weather.com', category: 'weather', rank: 23 },
+      { domain: 'accuweather.com', category: 'weather', rank: 24 },
+      { domain: 'wunderground.com', category: 'weather', rank: 25 },
+      { domain: 'metoffice.gov.uk', category: 'weather', rank: 26 },
+      { domain: 'people.com', category: 'entertainment', rank: 27 },
+      { domain: 'ew.com', category: 'entertainment', rank: 28 },
+      { domain: 'variety.com', category: 'entertainment', rank: 29 },
+      { domain: 'hollywoodreporter.com', category: 'entertainment', rank: 30 },
+      { domain: 'rollingstone.com', category: 'entertainment', rank: 31 },
+      { domain: 'usatoday.com', category: 'general', rank: 32 },
+      { domain: 'time.com', category: 'general', rank: 33 },
+      { domain: 'vox.com', category: 'general', rank: 34 },
+      { domain: 'politico.com', category: 'general', rank: 35 },
+      { domain: 'axios.com', category: 'general', rank: 36 },
+      { domain: 'theatlantic.com', category: 'general', rank: 37 },
+      { domain: 'techcrunch.com', category: 'general', rank: 38 },
+      { domain: 'theverge.com', category: 'general', rank: 39 },
+      { domain: 'wired.com', category: 'general', rank: 40 },
+      { domain: 'bostonglobe.com', category: 'local', rank: 41 },
+      { domain: 'sfchronicle.com', category: 'local', rank: 42 },
+      { domain: 'dallasnews.com', category: 'local', rank: 43 },
+      { domain: 'miamiherald.com', category: 'local', rank: 44 }
+    ];
+
+    let recommendedDomains = masterDomains.map(d => d.domain);
+    let inclusionDomains = [];
+    let recommendedSearchTerm = '';
+
+    function getMeta(domain) {
+      return masterDomains.find(d => d.domain === domain);
+    }
+
+    function renderDomainLists() {
+      recommendedListEl.innerHTML = '';
+      const filteredRecommended = recommendedDomains.filter(domain =>
+        domain.toLowerCase().includes(recommendedSearchTerm)
+      );
+
+      filteredRecommended.forEach(domain => {
+        const meta = getMeta(domain);
+        const categoryLabel = meta ? meta.category : '';
+        const li = document.createElement('li');
+        li.className = 'flex items-center gap-2 px-3 py-2 hover:bg-slate-50 cursor-pointer';
+        li.dataset.domain = domain;
+        li.innerHTML =
+          '<input type="checkbox" class="domain-checkbox" data-type="recommended" data-domain="' + domain + '"/>' +
+          '<span class="truncate flex-1">' + domain + '</span>' +
+          (categoryLabel
+            ? '<span class="text-[0.7rem] uppercase tracking-wide text-slate-400">' + categoryLabel + '</span>'
+            : '');
+        recommendedListEl.appendChild(li);
+      });
+
+      inclusionListEl.innerHTML = '';
+      inclusionDomains.forEach(domain => {
+        const meta = getMeta(domain);
+        const categoryLabel = meta ? meta.category : '';
+        const li = document.createElement('li');
+        li.className = 'flex items-center gap-2 px-3 py-2 hover:bg-slate-50 cursor-pointer';
+        li.dataset.domain = domain;
+        li.innerHTML =
+          '<input type="checkbox" class="domain-checkbox" data-type="inclusion" data-domain="' + domain + '"/>' +
+          '<span class="truncate flex-1">' + domain + '</span>' +
+          (categoryLabel
+            ? '<span class="text-[0.7rem] uppercase tracking-wide text-slate-400">' + categoryLabel + '</span>'
+            : '');
+        inclusionListEl.appendChild(li);
+      });
+
+      inclusionCountEl.textContent = inclusionDomains.length + ' domains';
+    }
+
+    renderDomainLists();
+
+    function moveDomains(fromList, toList, typeFrom) {
+      const checkboxes = document.querySelectorAll('.domain-checkbox[data-type="' + typeFrom + '"]:checked');
+      const domainsToMove = Array.from(checkboxes).map(cb => cb.dataset.domain);
+
+      if (!domainsToMove.length) return;
+
+      if (typeFrom === 'recommended') {
+        recommendedDomains = recommendedDomains.filter(d => !domainsToMove.includes(d));
+        inclusionDomains = Array.from(new Set(inclusionDomains.concat(domainsToMove)));
+      } else {
+        inclusionDomains = inclusionDomains.filter(d => !domainsToMove.includes(d));
+        recommendedDomains = Array.from(new Set(recommendedDomains.concat(domainsToMove)));
+      }
+      renderDomainLists();
+    }
+
+    function moveSingleDomain(domain, fromType) {
+      if (fromType === 'recommended') {
+        if (!recommendedDomains.includes(domain)) return;
+        recommendedDomains = recommendedDomains.filter(d => d !== domain);
+        if (!inclusionDomains.includes(domain)) inclusionDomains.push(domain);
+      } else {
+        if (!inclusionDomains.includes(domain)) return;
+        inclusionDomains = inclusionDomains.filter(d => d !== domain);
+        if (!recommendedDomains.includes(domain)) recommendedDomains.push(domain);
+      }
+      renderDomainLists();
+    }
+
+    document.getElementById('addToInclusion').addEventListener('click', () => {
+      moveDomains(recommendedDomains, inclusionDomains, 'recommended');
+    });
+    document.getElementById('removeFromInclusion').addEventListener('click', () => {
+      moveDomains(inclusionDomains, recommendedDomains, 'inclusion');
+    });
+
+    // Click-to-move on each list
+    recommendedListEl.addEventListener('click', (e) => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      if (e.target.tagName === 'INPUT') return; // keep checkbox behavior
+      const domain = li.dataset.domain;
+      if (!domain) return;
+      moveSingleDomain(domain, 'recommended');
+    });
+
+    inclusionListEl.addEventListener('click', (e) => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      if (e.target.tagName === 'INPUT') return;
+      const domain = li.dataset.domain;
+      if (!domain) return;
+      moveSingleDomain(domain, 'inclusion');
+    });
+
+    // file upload
+    const fileInput = document.getElementById('fileInput');
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const text = evt.target.result;
+        const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        inclusionDomains = Array.from(new Set(inclusionDomains.concat(lines)));
+        // remove any uploaded ones from recommended if present
+        recommendedDomains = recommendedDomains.filter(d => !lines.includes(d));
+        renderDomainLists();
+      };
+      reader.readAsText(file);
+    });
+
+    // load sample list
+    document.getElementById('loadSampleButton').addEventListener('click', () => {
+      const sample = ['cnn.com', 'forbes.com', 'bloomberg.com', 'usatoday.com'];
+      inclusionDomains = Array.from(new Set(inclusionDomains.concat(sample)));
+      recommendedDomains = recommendedDomains.filter(d => !sample.includes(d));
+      renderDomainLists();
+    });
+
+    // Search
+    domainSearchInput.addEventListener('input', (e) => {
+      recommendedSearchTerm = e.target.value.toLowerCase();
+      renderDomainLists();
+    });
+
+    // Pre-curated bundle buttons
+    function addTopN(n) {
+      const sorted = masterDomains
+        .filter(d => recommendedDomains.includes(d.domain))
+        .sort((a, b) => a.rank - b.rank);
+      const slice = sorted.slice(0, n).map(d => d.domain);
+      slice.forEach(domain => {
+        if (recommendedDomains.includes(domain)) {
+          recommendedDomains = recommendedDomains.filter(d => d !== domain);
+          if (!inclusionDomains.includes(domain)) inclusionDomains.push(domain);
+        }
+      });
+      renderDomainLists();
+    }
+
+    document.getElementById('addTop50').addEventListener('click', () => addTopN(50));
+    document.getElementById('addTop100').addEventListener('click', () => addTopN(100));
+    document.getElementById('addTop200').addEventListener('click', () => addTopN(200));
+
+    document.getElementById('addAllRecommended').addEventListener('click', () => {
+      recommendedDomains.forEach(domain => {
+        if (!inclusionDomains.includes(domain)) inclusionDomains.push(domain);
+      });
+      recommendedDomains = [];
+      renderDomainLists();
+    });
+
+    // Category buttons
+    document.querySelectorAll('.category-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.category;
+        const candidates = masterDomains.filter(d => d.category === cat && recommendedDomains.includes(d.domain));
+        candidates.forEach(d => {
+          recommendedDomains = recommendedDomains.filter(x => x !== d.domain);
+          if (!inclusionDomains.includes(d.domain)) inclusionDomains.push(d.domain);
+        });
+        renderDomainLists();
+      });
+    });
+
+    // ---------- STEP 2: CHART / THRESHOLDS ----------
+    const chartCanvas = document.getElementById('thresholdChart');
+    const includedShareEl = document.getElementById('includedShare');
+    const excludedShareEl = document.getElementById('excludedShare');
+
+    let reliabilityFloorMode = 'regular';
+    let biasRangeMode = 'regular';
+
+    const allPoints = [];
+
+    function randn(mean, std) {
+      let u = 0, v = 0;
+      while (u === 0) u = Math.random();
+      while (v === 0) v = Math.random();
+      const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+      return mean + std * z;
+    }
+
+    function clamp(val, min, max) {
+      return Math.max(min, Math.min(max, val));
+    }
+
+    function generatePoints() {
+      allPoints.length = 0;
+      // concentrated high-quality cluster in upper half (centered)
+      for (let i = 0; i < 380; i++) {
+        const x = clamp(randn(0, 0.25), -0.9, 0.9);
+        const y = clamp(randn(0.78, 0.09), 0.55, 1.0);
+        allPoints.push({ x, y });
+      }
+      // broader lower-quality cluster
+      for (let i = 0; i < 220; i++) {
+        const x = clamp(randn(0, 0.6), -1.0, 1.0);
+        const y = clamp(randn(0.25, 0.12), 0.0, 0.55);
+        allPoints.push({ x, y });
+      }
+    }
+
+    function getThresholds() {
+      let floorY;
+      if (reliabilityFloorMode === 'tight') floorY = 0.78;
+      else if (reliabilityFloorMode === 'looser') floorY = 0.56;
+      else floorY = 0.68;
+
+      let minX, maxX;
+      if (biasRangeMode === 'regular') {
+        minX = -0.35; maxX = 0.35;
+      } else if (biasRangeMode === 'wide') {
+        minX = -0.7; maxX = 0.7;
+      } else if (biasRangeMode === 'left') {
+        minX = -0.8; maxX = 0.1;
+      } else { // right
+        minX = -0.1; maxX = 0.8;
+      }
+      return { floorY, minX, maxX };
+    }
+
+    function drawChart() {
+      if (!chartCanvas) return;
+      const rect = chartCanvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      chartCanvas.width = rect.width * dpr;
+      chartCanvas.height = rect.height * dpr;
+      const ctx = chartCanvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      const padding = 30;
+      const width = rect.width - padding * 2;
+      const height = rect.height - padding * 2;
+
+      function xToPx(x) { // -1..1
+        return padding + ((x + 1) / 2) * width;
+      }
+      function yToPx(y) { // 0..1 (0 bottom)
+        return padding + height - y * height;
+      }
+
+      // background bands: deep red bottom ~35%, soft red next ~15%, cream top 50%
+      const y0 = yToPx(0);
+      const y35 = yToPx(0.35);
+      const y5 = yToPx(0.5);
+      const y1 = yToPx(1);
+
+      ctx.fillStyle = '#fecaca'; // deep red
+      ctx.fillRect(padding, y0, width, y35 - y0);
+      ctx.fillStyle = '#fee2e2'; // lighter red
+      ctx.fillRect(padding, y35, width, y5 - y35);
+      ctx.fillStyle = '#fefce8'; // cream
+      ctx.fillRect(padding, y5, width, y1 - y5);
+
+      // grid
+      ctx.strokeStyle = 'rgba(148,163,184,0.5)';
+      ctx.lineWidth = 0.5;
+      ctx.setLineDash([4, 4]);
+      const gridLines = 4;
+      for (let i = 1; i < gridLines; i++) {
+        const gy = padding + (height / gridLines) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding, gy);
+        ctx.lineTo(padding + width, gy);
+        ctx.stroke();
+      }
+      for (let i = 1; i < gridLines; i++) {
+        const gx = padding + (width / gridLines) * i;
+        ctx.beginPath();
+        ctx.moveTo(gx, padding);
+        ctx.lineTo(gx, padding + height);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      // thresholds
+      const { floorY, minX, maxX } = getThresholds();
+      const boxTopPx = yToPx(1);          // always top of chart
+      const boxBottomPx = yToPx(floorY);  // stays in cream band
+      const boxLeftPx = xToPx(minX);
+      const boxRightPx = xToPx(maxX);
+
+      ctx.fillStyle = 'rgba(34,197,94,0.12)';
+      ctx.fillRect(boxLeftPx, boxTopPx, boxRightPx - boxLeftPx, boxBottomPx - boxTopPx);
+      ctx.strokeStyle = 'rgba(22,163,74,0.8)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(boxLeftPx, boxTopPx, boxRightPx - boxLeftPx, boxBottomPx - boxTopPx);
+
+      // center vertical line
+      ctx.strokeStyle = 'rgba(148,163,184,0.9)';
+      ctx.lineWidth = 1.2;
+      const centerX = xToPx(0);
+      ctx.beginPath();
+      ctx.moveTo(centerX, padding);
+      ctx.lineTo(centerX, padding + height);
+      ctx.stroke();
+
+      // points
+      let included = 0;
+      let excluded = 0;
+      allPoints.forEach(p => {
+        const inside = p.y >= floorY && p.x >= minX && p.x <= maxX;
+        if (inside) included++; else excluded++;
+        ctx.beginPath();
+        ctx.arc(xToPx(p.x), yToPx(p.y), 3, 0, Math.PI * 2);
+        ctx.fillStyle = inside ? '#22c55e' : '#ef4444';
+        ctx.globalAlpha = inside ? 0.9 : 0.8;
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+
+      const total = included + excluded || 1;
+      const includedPct = Math.round((included / total) * 100);
+      const excludedPct = 100 - includedPct;
+      includedShareEl.textContent = includedPct + '%';
+      excludedShareEl.textContent = excludedPct + '%';
+    }
+
+    generatePoints();
+    drawChart();
+
+    window.addEventListener('resize', () => {
+      drawChart();
+    });
+
+    function updateOptionSelection(groupSelector, activeDataAttr, value) {
+      document.querySelectorAll(groupSelector).forEach(btn => {
+        btn.classList.remove('border-sky-400', 'bg-sky-50', 'shadow-sm');
+      });
+      const activeBtn = document.querySelector(groupSelector + '[' + activeDataAttr + '="' + value + '"]');
+      if (activeBtn) {
+        activeBtn.classList.add('border-sky-400', 'bg-sky-50', 'shadow-sm');
+      }
+    }
+
+    document.querySelectorAll('.floor-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        reliabilityFloorMode = btn.dataset.floor;
+        updateOptionSelection('.floor-option', 'data-floor', reliabilityFloorMode);
+        drawChart();
+      });
+    });
+
+    document.querySelectorAll('.bias-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        biasRangeMode = btn.dataset.bias;
+        updateOptionSelection('.bias-option', 'data-bias', biasRangeMode);
+        drawChart();
+      });
+    });
+
+    // initialize default selections
+    updateOptionSelection('.floor-option', 'data-floor', reliabilityFloorMode);
+    updateOptionSelection('.bias-option', 'data-bias', biasRangeMode);
+
+    // ---------- STEP 3: FINISH ----------
+    const finishButton = document.getElementById('finishButton');
+    const finishMessage = document.getElementById('finishMessage');
+    const activationForm = document.getElementById('activationForm');
+
+    finishButton.addEventListener('click', () => {
+      if (!activationForm.checkValidity()) {
+        activationForm.reportValidity();
+        return;
+      }
+      finishMessage.classList.remove('hidden');
+      // simple console output of configuration
+      const formData = new FormData(activationForm);
+      const config = {
+        brand: formData.get('brand'),
+        dsp: formData.get('dsp'),
+        dealId: formData.get('dealId'),
+        startDate: formData.get('startDate'),
+        budget: formData.get('budget'),
+        notes: formData.get('notes'),
+        inclusionDomains,
+        thresholds: {
+          reliabilityFloorMode,
+          biasRangeMode
+        }
+      };
+      console.log('News AI configuration:', config);
+      alert('Configuration captured. Share this page or console output with the Ad Fontes team.');
+    });
+
+    // initial step state
+    updateStepDisplay();
+  </script>
+</body>
+</html>
